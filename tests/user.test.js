@@ -3,7 +3,7 @@ const app = require('../app')
 const { MongoMemoryServer } = require('mongodb-memory-server')
 const request = require('supertest')
 const User = require('../models/user')
-const server = app.listen('8080', () => console.log('Testing the limits...'))
+const server = app.listen('8080', () => console.log('Testing the users...'))
 let mongoServer
 
 beforeAll(async () => {
