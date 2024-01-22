@@ -32,7 +32,7 @@ afterAll(async () => {
 })
 
 describe('Testing Pet end points for RESTFUL JSON API', () => {
-    test('Display a given user index of their enrolled pets', async () => {
+    test('Display a given users index of their enrolled pets', async () => {
         const pet = new Pet({ name: 'Vera', breed: 'Aussie-Lab', gender: 'female', weight: 57 })
         await pet.save()
 

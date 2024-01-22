@@ -5,7 +5,7 @@ const jwt = require('jsonwebtoken')
 
 const courseSchema = new mongoose.Schema({
     name: { type: String, required: true },
-    bio: { type: String, required: true },
+    description: { type: String, required: true },
     petsEnrolled: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet'}],
     instructorsAssigned: [""]
 },

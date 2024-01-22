@@ -3,6 +3,7 @@ const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
+// Consider changing gender from string to boolean type. Dilemma: Should this be a two input system then? The male input is off and the female input is on, and vice versa?
 const petSchema = new mongoose.Schema({
     name: { type: String, required: true },
     breed: { type: String, required: true },
