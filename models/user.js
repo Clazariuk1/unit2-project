@@ -1,4 +1,5 @@
-// require('dotenv').config()
+// Does the model have a 'defaultValue' setting?? How do we ensure default admin value is false??
+
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
@@ -7,7 +8,8 @@ const userSchema = new mongoose.Schema({
     name: { type: String, required: true },
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
-    enrolledPets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet'}]
+    enrolledPets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet'}],
+    isAdmin: [{ type: Boolean, required: true, defaultValue: false }]
 },
 {
     timestamps: true

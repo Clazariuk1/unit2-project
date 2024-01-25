@@ -46,10 +46,9 @@ exports.loginUser = async (req, res) => {
 exports.updateUser = async (req, res) => {
     try {
         const updates = Object.keys(req.body)
-        const user = await User.findOne({_id: req.params.id })
         updates.forEach(update => req.user[update] = req.body[update])
         await req.user.save()
-        res.json(user)
+        res.json(req.user)
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
@@ -59,6 +58,15 @@ exports.deleteUser = async (req, res) => {
     try {
         await req.user.deleteOne()
         res.json({ message: 'user deleted' })
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
+
+exports.showUser = async (req, res) => {
+    try {
+        const foundUser = await User.findOne({_id: req.params.id, user: req.user._id }).populate('pets')
+        res.status(200).json(foundUser)
     } catch (error) {
         res.status(400).json({ message: error.message })
     }

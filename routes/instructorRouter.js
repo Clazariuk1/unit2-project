@@ -9,5 +9,7 @@ router.post('/', instructorController.create)
 router.put('/:id', instructorController.update)
 router.delete('/:id', instructorController.destroy)
 router.get('/:id', instructorController.show)
+// router.post('/:instructorId/courses/:courseId', instructorController.addCourse) // MANY TO MANY . currently having an issue with this route. I don't think this one is necessary.
+
 
 module.exports = router

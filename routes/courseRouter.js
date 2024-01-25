@@ -9,5 +9,10 @@ router.post('/', courseController.create)
 router.put('/:id', courseController.update)
 router.delete('/:id', courseController.destroy)
 router.get('/:id', courseController.show)
+// POST /movies/moviewperformer
+router.post('/:courseId/instructors/:instructorId', courseController.addInstructor) // MANY TO MANY
+router.post('/:courseId/pets/:petId', courseController.enrollPet )
+router.delete('/:courseId/pets/:petId', courseController.removePet )
+
 
 module.exports = router

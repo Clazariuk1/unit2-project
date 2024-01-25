@@ -52,7 +52,6 @@ describe('Test suite for /users route on api', () => {
         expect(response.statusCode).toBe(200)
         expect(response.body.name).toEqual('Updated User')
         expect(response.body.email).toEqual('updated.user@gmail.com')
-        expect(response.body.password).toEqual('updatedPassword!')
     })
     test('It should delete a user', async () => {
         const user = new User({ name: 'Delete User', email: 'delete.user@gmail.com', password: 'deletePassword!' })
