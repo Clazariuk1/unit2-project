@@ -20,7 +20,11 @@ afterAll(async() => {
 describe('Test suite for /users route on api', () => {
     // /users
     test('It should create a new user in the db', async () => {
-        const response = await request(app).post('/users').send({ name: 'Created User', email: 'createdUser@gmail.com', password: 'createdPassword!' })
+        const response = await request(app).post('/users').send({
+            name: 'Created User',
+            email: 'createdUser@gmail.com',
+            password: 'createdPassword!'
+        })
 
         expect(response.statusCode).toBe(200)
         expect(response.body.user.name).toEqual('Created User')
@@ -54,7 +58,10 @@ describe('Test suite for /users route on api', () => {
         expect(response.body.email).toEqual('updated.user@gmail.com')
     })
     test('It should delete a user', async () => {
-        const user = new User({ name: 'Delete User', email: 'delete.user@gmail.com', password: 'deletePassword!' })
+        const user = new User({
+            name: 'Delete User',
+            email: 'delete.user@gmail.com',
+            password: 'deletePassword!' })
         await user.save()
         const token = await user.generateAuthToken()
 

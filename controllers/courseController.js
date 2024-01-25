@@ -18,45 +18,6 @@ exports.index = async function (req, res) {
     }
 }
 
-exports.create = async function create(req, res) {
-    if(req.user.isAdmin === true ) {
-        try {
-            const course = course.create(req.body)
-            res.status(200).json(course)
-        } catch (error) {
-            res.status(400).json({ message: error.message })
-        }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
-    }
-}
-
-exports.update = async function update(req, res) {
-    if(req.user.isAdmin === true ) {
-        try {
-            const updatedCourse = await Course.findOneAndUpdate({_id: req.params.id }, req.body, { new: true })
-            res.status(200).json(updatedCourse)
-        } catch (error) {
-            res.status(400).json({ message: error.message })
-        }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
-    }
-}
-
-exports.destroy = async function destroy(req, res) {
-    if(req.user.isAdmin === true ) {
-        try {
-            const deleted = await Course.findOneAndDelete({_id: req.params.id })
-            res.status(200).json({ message: `The course with the ID of ${deleted._id} was deleted from the MongoDB database; no further action necessary`})
-        } catch (error) {
-            res.status(400).json({ message: error.message })
-        }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
-    }
-}
-
 exports.show = async function show (req, res) {
     try {
         const foundCourse = await Course.findOne({_id: req.params.id }).populate('instructors')
@@ -66,11 +27,59 @@ exports.show = async function show (req, res) {
     }
 }
 
+exports.enrollPet = async function enrollPet(req, res) {
+    try {
+        const foundPet = await Pet.findOne({_id: req.params.id, user: req.user._id })
+        if(!foundPet) throw new Error(`Could not locate pet with id ${req.params.petId}`)
+        const foundCourse = await Course.findOne({_id: req.params.courseId })
+        if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
+        if(foundCourse.petsEnrolled.length >= 6 ) {
+            res.status(403).json({ message: `This course is already at maximum enrollment for pets; please contact admins to join waitlist.`})
+        }
+        foundCourse.petsEnrolled.push(foundPet._id)
+        foundPet.enrolledCourses.push(foundCourse._id)
+        await foundCourse.save()
+        await foundPet.save()
+        res.status(200).json({
+            msg: `Successfully enrolled pet with id ${req.params.petId} into course with id ${req.params.courseId}`,
+            course: foundCourse,
+            petsEnrolled: foundPet
+        })
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
 
-// MUST ENSURE ONLY ADMINS PERMISSIBLE TO DO BELOW
+// ONLY ADMINS PERMISSIBLE TO DO BELOW
+
+exports.create = async function create(req, res) {
+    try {
+        const course = course.create(req.body)
+        res.status(200).json(course)
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
+
+exports.update = async function update(req, res) {
+    try {
+        const updatedCourse = await Course.findOneAndUpdate({_id: req.params.id }, req.body, { new: true })
+        res.status(200).json(updatedCourse)
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
+
+exports.destroy = async function destroy(req, res) {
+    try {
+        const deleted = await Course.findOneAndDelete({_id: req.params.id })
+        res.status(200).json({ message: `The course with the ID of ${deleted._id} was deleted from the MongoDB database; no further action necessary`})
+    } catch (error) {
+        res.status(400).json({ message: error.message })
+    }
+}
 
 exports.removeInstructor = async function removeInstructor(req, res) {
-    if(req.user.isAdmin === true ) {
         try {
             const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
             if(!foundInstructor) throw new Error(`Could not locate instructor with id ${req.params.instructorId}`)
@@ -86,18 +95,18 @@ exports.removeInstructor = async function removeInstructor(req, res) {
         } catch (error) {
 
         }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
     }
-}
 
 exports.addInstructor = async function addInstructor(req, res) {
-    if(req.user.isAdmin === true ) {
         try {
             const foundInstructor = await Instructor.findOne({_id: req.params.instructorId }) // instructorId named in instructor router
             if(!foundInstructor) throw new Error(`Could not locate instructor with id ${req.params.instructorId}`)
+            if(foundInstructor.courses.length >= 4) throw new Error(`Instructor with id ${req.params.instructorId} is already assigned the maximum number of courses.`)
             const foundCourse = await Course.findOne({_id: req.params.courseId }) // courseId named in course router
             if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
+            if(foundCourse.instructorsAssigned.length >= 2) {
+                res.status(403).json({ message: `This course is already at maximum assignment for instructors.`})
+            }
             foundCourse.instructorsAssigned.push(foundInstructor._id)
             foundInstructor.courses.push(foundCourse._id)
             await foundCourse.save()
@@ -110,13 +119,9 @@ exports.addInstructor = async function addInstructor(req, res) {
         } catch (error) {
             res.status(400).json({msg: error.message })
         }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
     }
-}
 
 exports.removePet = async function removePet(req, res) {
-    if (req.user.isAdmin === true ) {
         try {
             const foundPet = await Pet.findOne({_id: req.params.petId})
             if(!foundPet) throw new Error(`Could not locate pet with id${req.params.petId}`)
@@ -131,32 +136,4 @@ exports.removePet = async function removePet(req, res) {
         } catch (error) {
             res.status(400).json({msg: error.message })
         }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
-
     }
-}
-
-exports.enrollPet = async function enrollPet(req, res) {
-    try {
-        const foundPet = await Pet.findOne({_id: req.params.id, user: req.user._id })
-        if(!foundPet) throw new Error(`Could not locate pet with id ${req.params.petId}`)
-        const foundCourse = await Course.findOne({_id: req.params.courseId })
-        if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
-        foundCourse.petsEnrolled.push(foundPet._id)
-        foundPet.enrolledCourses.push(foundCourse._id)
-        await foundCourse.save()
-        await foundPet.save()
-        res.status(200).json({
-            msg: `Successfully enrolled pet with id ${req.params.petId} into course with id ${req.params.courseId}`,
-            course: foundCourse,
-            petsEnrolled: foundPet
-        })
-    } catch (error) {
-        res.status(400).json({ message: error.message })
-    }
-}
-
-
-// router.post('/:courseId/pets/:petId', courseController.addPet )
-// router.delete('/:courseId/pets/:petId', courseController.removePet )

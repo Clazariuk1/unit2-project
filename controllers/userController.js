@@ -18,6 +18,14 @@ exports.auth = async (req, res, next) => {
     }
 }
 
+exports.adminCheck = async (req, res, next) => {
+    if(req.user.isAdmin) {
+        next()
+    } else {
+        res.status(403).json({msg: `User does not have authorization to perform this action.`})
+    }
+}
+
 exports.createUser = async (req, res) => {
     try {
         const user = new User (req.body)

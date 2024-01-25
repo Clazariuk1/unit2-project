@@ -14,6 +14,7 @@ const request = require('supertest')
 const server = app.listen('8095', () => console.log('Test the Instructors!'))
 
 const Instructor = require('../models/instructor')
+const User = require('../models/user')
 let mongoServer
 
 beforeAll(async () => {
@@ -29,8 +30,10 @@ afterAll(async () => {
 
 describe('Testing Instructor end points for RESTFUL JSON API', () => {
     test('Display the full roster of instructors teaching courses', async () => {
-        const instructor = new Instructor({ name: 'Keith Oberland', bio: 'He likes pina coladas and walks in the rain...', courses: ["Potty Training", "Leash Training", "Agility Training"],
-        testimonials: ["He's the greatest, would hire again.", "Can't believe he's so good!"]
+        const instructor = new Instructor({
+            name: 'Keith Oberland',
+            bio: 'He likes pina coladas and walks in the rain...', courses: ["Potty Training", "Leash Training", "Agility Training"],
+            testimonials: ["He's the greatest, would hire again.", "Can't believe he's so good!"]
         })
         await instructor.save()
 
@@ -47,19 +50,26 @@ describe('Testing Instructor end points for RESTFUL JSON API', () => {
             expect(response.body[i]).toHaveProperty('createdAt')
         }
     })
+    // const user = new User({ name: 'admin user', email: 'admin@gmail.com', password: 'adminpassword!', isAdmin: true })
     test('Create a new instructor', async () => {
         const response = await request(app).post('/instructors').send({
             name: 'New Instructor',
             bio: "Hey I'm the new instructor... so yeah, hire me.",
-            courses: ["Obedience Training", "Leash Training", "Potty Training", "Tricks 101"],
-            testimonials: ["She's fierce!", "Slay, queen!", "Yaaas!"]
+            // courses: ["Obedience Training", "Leash Training", "Potty Training", "Tricks 101"],
+            // testimonials: ["She's fierce!", "Slay, queen!", "Yaaas!"]
         })
         expect(response.body.name).toEqual('New Instructor')
         expect(Array.isArray(response.body.courses)).toBeTruthy()
+        expect(response.body.courses.length).toEqual(4)
         expect(Array.isArray(response.body.testimonials)).toBeTruthy()
+        expect(response.body.testimonials.length).toEqual(3)
     })
     test('given a valid body it should update an existing instructor and return it', async () => {
-        const instructor = new Instructor({ name: 'Original Instructor', courses: ["Tricks 101", "Tricks 201", "Agility Training" ], testimonials: ["The best in the business!", "Outgoing and friendly", "very patient"]
+        const instructor = new Instructor({
+            name: 'Original Instructor',
+            bio: 'To be determined',
+            courses: ["Tricks 101", "Tricks 201", "Agility Training" ],
+            testimonials: ["The best in the business!", "Outgoing and friendly", "very patient"]
         })
         await instructor.save()
 
@@ -71,12 +81,17 @@ describe('Testing Instructor end points for RESTFUL JSON API', () => {
         })
         expect(response.statusCode).toBe(200)
         expect(response.body.name).toEqual('Updated Instructor')
+        expect(response.body.bio).toEqual(`Not gonna lie, guys, I'm like, a really good instructor.`)
         // Should we find a better testing solution for updating an array??
         expect(response.body.courses.length).toEqual(4)
         expect(response.body.testimonials.length).toEqual(3)
     })
     test('It should delete an existing instructor given a valid instructor id', async () => {
-        const instructor = new Instructor({ name: 'Delete Instructor', bio: "I know I haven't been performing lately but please don't fire me, I need this job...", courses: [], testimonials: []
+        const instructor = new Instructor({
+            name: 'Delete Instructor',
+            bio: "I know I haven't been performing lately but please don't fire me, I need this job...",
+            courses: [],
+            testimonials: []
     })
     await instructor.save()
     const response = await request(app).delete(`/instructors/${instructor._id}`)

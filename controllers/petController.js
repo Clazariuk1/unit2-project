@@ -10,11 +10,13 @@
 // must add user to all pet models
 // make sure that you correctly update the models to include user data.
 
+// still having difficulty conceptualizing the placement of user-owners within the model for correct showing.
+
 const Pet = require('../models/pet')
 
 exports.index = async function (req, res) {
     try {
-        const pets = await Pet.find({})
+        const pets = await Pet.find({/*user: req.user._id*/ })
         res.status(200).json(pets)
     } catch (error) {
         res.status(400).json({ message: error.message })
@@ -41,8 +43,8 @@ exports.update = async function update(req, res) {
 
 exports.destroy = async function destroy(req, res) {
     try {
-        const deleted = await Pet.findOneAndDelete({_id: req.params.id })
-        res.status(200).json({ message: `The pet with the ID of ${deleted._id} was deleted from the MongoDB database; no further action necessary`})
+        const deleted = await Pet.findOneAndDelete({_id: req.params.id, user: req.user._id })
+        res.status(204).json({ message: `The pet with the ID of ${deleted._id} was deleted from the MongoDB database; no further action necessary`})
     } catch (error) {
         res.status(400).json({ message: error.message })
     }

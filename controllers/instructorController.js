@@ -23,49 +23,47 @@ exports.index = async function (req, res) {
 }
 
 exports.create = async function create (req, res) {
-    if(req.user.isAdmin === true ) {
         try {
             const instructor = instructor.create(req.body)
             res.status(200).json(instructor)
         } catch (error) {
             res.status(400).json({ message: error.message })
         }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
     }
-}
 
 exports.update = async function update(req, res) {
-    if(req.user.isAdmin === true ) {
         try {
             const updatedInstructor = await Instructor.findOneAndUpdate({_id: req.params.id }, req.body, { new: true })
             res.status(200).json(updatedInstructor)
         } catch (error) {
             res.status(400).json({ message: error.message })
         }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
     }
-}
 
 exports.destroy = async function destroy(req, res) {
-    if(req.user.isAdmin === true ) {
         try {
             const deleted = await Instructor.findOneAndDelete({_id: req.params.id })
             res.status(200).json({ message: `The instructor with the ID of ${deleted._id} was deleted from the MongoDB database; no further action necessary`})
         } catch (error) {
             res.status(400).json({ message: error.message })
         }
-    } else {
-        res.status(403).json({ message: `User does not have authorization to perform this action.`})
     }
-}
 
 exports.show = async function show(req, res) {
     try {
         const foundInstructor = await Instructor.findOne({_id: req.params.id }).populate('courses')
         res.status(200).json(foundInstructor)
     } catch (error){
+        res.status(400).json({ message: error.message })
+    }
+}
+
+exports.submitTestimonial = async function submitTestimonial(req, res) {
+    try {
+        const foundInstructor = await Instructor.findOne({_id: req.params.id })
+         foundInstructor.testimonials.push(req.body)
+           await foundInstructor.save()
+    } catch (error) {
         res.status(400).json({ message: error.message })
     }
 }

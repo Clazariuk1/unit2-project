@@ -9,7 +9,8 @@ const userSchema = new mongoose.Schema({
     email: { type: String, required: true, unique: true },
     password: { type: String, required: true },
     enrolledPets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet'}],
-    isAdmin: [{ type: Boolean, required: true, defaultValue: false }]
+    // should isAdmin have defaultValue: false ???
+    isAdmin: { type: Boolean, required: true }
 },
 {
     timestamps: true
