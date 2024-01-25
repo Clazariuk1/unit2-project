@@ -23,7 +23,8 @@ describe('Test suite for /users route on api', () => {
         const response = await request(app).post('/users').send({
             name: 'Created User',
             email: 'createdUser@gmail.com',
-            password: 'createdPassword!'
+            password: 'createdPassword!',
+            isAdmin: true
         })
 
         expect(response.statusCode).toBe(200)
@@ -31,7 +32,12 @@ describe('Test suite for /users route on api', () => {
         expect(response.body.user.email).toEqual('createdUser@gmail.com')
     })
     test('It should log in a user', async () => {
-        const user = new User({ name: 'Another User', email: 'another.user@gmail.com', password: 'anotherPassword!' })
+        const user = new User({
+            name: 'Another User',
+            email: 'another.user@gmail.com',
+            password: 'anotherPassword!',
+            isAdmin: false
+        })
         await user.save()
 
         const response = await request(app)
@@ -44,14 +50,23 @@ describe('Test suite for /users route on api', () => {
         expect(response.body).toHaveProperty('token')
     })
     test('It should update a user', async () => {
-        const user = new User({ name: 'Original User', email: 'original.user@gmail.com', password: 'originalPassword!' })
+        const user = new User({
+            name: 'Original User',
+            email: 'original.user@gmail.com',
+            password: 'originalPassword!',
+            isAdmin: false })
         await user.save()
         const token = await user.generateAuthToken()
 
         const response = await request(app)
         .put(`/users/${user._id}`)
         .set('Authorization', `Bearer ${token}`)
-        .send({ name: 'Updated User', email: 'updated.user@gmail.com', password: 'updatedPassword!' })
+        .send({
+            name: 'Updated User',
+            email: 'updated.user@gmail.com',
+            password: 'updatedPassword!',
+            isAdmin: false
+        })
 
         expect(response.statusCode).toBe(200)
         expect(response.body.name).toEqual('Updated User')
@@ -61,7 +76,9 @@ describe('Test suite for /users route on api', () => {
         const user = new User({
             name: 'Delete User',
             email: 'delete.user@gmail.com',
-            password: 'deletePassword!' })
+            password: 'deletePassword!',
+            isAdmin: true
+        })
         await user.save()
         const token = await user.generateAuthToken()
 
@@ -73,7 +90,12 @@ describe('Test suite for /users route on api', () => {
         expect(response.body.message).toEqual('user deleted')
     })
     test('User attempts login incorrectly', async () => {
-        const user = new User({ name: 'Correct User', email: 'correct.user@gmail.com', password: 'theRightOne!' })
+        const user = new User({
+            name: 'Correct User',
+            email: 'correct.user@gmail.com',
+            password: 'theRightOne!',
+            isAdmin: false
+        })
         await user.save()
 
         const token = await user.generateAuthToken()
@@ -83,6 +105,5 @@ describe('Test suite for /users route on api', () => {
         .send({ email: 'incorrect.user@gmail.com', password: 'incorrectPassword?'})
 
         expect(response.statusCode).toBe(400)
-
     })
 })
