@@ -1,5 +1,6 @@
 // Does the model have a 'defaultValue' setting?? How do we ensure default admin value is false??
-
+//make sure dotenv active for all models.
+require('dotenv').config()
 const mongoose = require('mongoose')
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')

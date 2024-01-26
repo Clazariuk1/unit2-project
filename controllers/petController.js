@@ -16,7 +16,7 @@ const Pet = require('../models/pet')
 
 exports.index = async function (req, res) {
     try {
-        const pets = await Pet.find({/*user: req.user._id*/ })
+        const pets = await Pet.find({user: req.user._id })
         res.status(200).json(pets)
     } catch (error) {
         res.status(400).json({ message: error.message })
@@ -40,11 +40,13 @@ exports.update = async function update(req, res) {
         res.status(400).json({ message: error.message })
     }
 }
-
+// you HAVE to delete it from array, see .pull and req.user.save() below.
 exports.destroy = async function destroy(req, res) {
     try {
-        const deleted = await Pet.findOneAndDelete({_id: req.params.id, user: req.user._id })
-        res.status(204).json({ message: `The pet with the ID of ${deleted._id} was deleted from the MongoDB database; no further action necessary`})
+        const deleted = await Pet.findOneAndDelete({_id: req.params.id, owner: req.user._id })
+        req.user.enrolledPets.pull(deleted._id)
+        await req.user.save()
+        res.status(200).json({ message: `The pet with the ID of ${deleted._id} was deleted from the MongoDB database; no further action necessary`, user: req.user })
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
@@ -54,7 +56,7 @@ exports.destroy = async function destroy(req, res) {
 // this below code is example of how to display the CORRECT user's pets.
 exports.show = async function show(req, res) {
     try {
-        const foundPet = await Pet.findOne({_id: req.params.id, user: req.user._id })
+        const foundPet = await Pet.findOne({_id: req.params.id, owner: req.user._id })
         res.status(200).json(foundPet)
     } catch (error) {
         res.status(400).json({ message: error.message })
