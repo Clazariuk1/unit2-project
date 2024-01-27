@@ -3,7 +3,6 @@ const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
 
 
-// use ENUM as your choice factors. make a line in the code to push back response.tolowercase for the gender data.
 const petSchema = new mongoose.Schema({
     name: { type: String, required: true },
     breed: { type: String, required: true },

@@ -18,7 +18,6 @@ afterAll(async() => {
 })
 
 describe('Test suite for /users route on api', () => {
-    // /users
     test('It should create a new user in the db', async () => {
         const response = await request(app).post('/users').send({
             name: 'Created User',

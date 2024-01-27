@@ -1,7 +1,5 @@
 // ONLY AN ADMIN SHOULD BE ABLE TO ADD / EDIT / DELETE COURSES
 
-// seed a user for testing into the database??
-
 // must add tests to add instructors
 // must add tests to remove instructors
 // must add tests to add pet
@@ -30,23 +28,6 @@ afterAll(async () => {
     mongoServer.stop()
     server.close()
 })
-
-// user model:
-// name: { type: String, required: true },
-// email: { type: String, required: true, unique: true },
-// password: { type: String, required: true },
-// enrolledPets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet'}],
-// isAdmin: [{ type: Boolean, required: true, defaultValue: false }]
-// },
-
-/*
-course Model
-    name: { type: String, required: true },
-    description: { type: String, required: true },
-    petsEnrolled: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet'}],
-    instructorsAssigned: [""]
-},
-*/
 
 // I don't understand what's going wrong here, I shouldn't need to create a user of any kind, admin or no, to access the index. What am I missing?
 describe('Testing Course end points for RESTFUL JSON API', () => {
@@ -82,7 +63,7 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
     //     expect(response.body.description).toEqual('New Course coming soon! Check it out.')
     // })
     // test('given a valid body it should update an existing course and return it', async () => {
-    //     const user = new User ({ name: "Admin Test", email: "admin@email.com", password: "N3v3rM0re!", isAdmin: true })
+    //     const user = new User ({ name: "Admin Test0", email: "admin0@email.com", password: "N3v3rM0re!0", isAdmin: true })
     //     const token = await user.generateAuthToken()
     //     await user.save()
     //     const course = new Course({
@@ -103,8 +84,8 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
     //     expect(response.body.name).toEqual('Updated Course')
     //     expect(response.body.description).toEqual("Updated Course description. Blah Blah.")
     // })
-
-    // // MAJOR lingering question, how do we ensure that instructor and pet course arrays correctly have the deleted course removed from their arrays?
+// Assist talk start here
+    // MAJOR lingering question, how do we ensure that instructor and pet course arrays correctly have the deleted course removed from their arrays?
     // test('It should delete an existing course given a valid course id', async () => {
     //     const user = new User({ name: 'Auth User', email: 'AuthEmail@gmail.com', password: 'allofthem!', isAdmin: true })
     //     const token = await user.generateAuthToken()
@@ -115,15 +96,36 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
     //         description: "Delete this course.",
     //     })
 
+    //     // must include some data about the instructor and pet arrays correctly updating.
+
     //     await course.save()
+    //     // create one pet. create one instructor. assign course to both. cou
+    //     const pet = new Pet({
+    //         name: "kelly", breed: "husky", gender: "female", weight: 44, enrolledCourses: [course._id], owner: user._id
+    //     })
+    //     await pet.save()
+    //     const instructor = new Instructor({
+    //         name: "Kill course", bio: "I exist for my courses to be removed", courses: [course._id]
+    //     })
+    //     await instructor.save()
     //     const response = await request(app)
+
+    //     pet.enrolledCourses.pull(course._id)
+    //     await pet.save()
+
+    //     instructor.courses.pull(course._id)
+    //     await instructor.save()
     //     .delete(`/courses/${course._id}`)
     //     .set('Authorization', `Bearer ${token}`)
+
+
 
     //     // we must include some additional pathways to ensure removal of course from instructor and pet arrays on completion.
 
     //     expect(response.statusCode).toBe(200)
     //     expect(response.body.message).toEqual(`The course with the ID of ${course._id} was deleted from the MongoDB database; no further action necessary`)
+    //     expect(pet.enrolledCourses.length).toEqual(0)
+    //     expect(instructor.courses.length).toEqual(0)
     // })
     // test('It should show an existing course given a valid course id', async () => {
     //     const course = new Course({
@@ -135,31 +137,6 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
 
     //     expect(response.statusCode).toBe(200)
     //     expect(response.body.name).toEqual('Show Course')
-    // })
-    // test('It should correctly prevent a user that is not an admin from deleting an existing course', async () => {
-    //     const course = new Course({
-    //         name: "studd",
-    //         description: "more stuff"
-    //     })
-    //     await course.save()
-
-    //     const user = new User({
-    //         name: 'unauthorized user',
-    //         email: 'unauthorized@gmail.com',
-    //         password: 'unauthorized1!',
-    //         isAdmin: false
-    //     })
-    //     const token = await user.generateAuthToken()
-    //     await user.save()
-
-
-
-    //     const response = await request(app)
-    //     .delete(`/courses${course._id}/`)
-    //     .set('Authorization', `Bearer ${token}`)
-
-    //     expect(response.statusCode).toBe(403)
-    //     expect(response.message).toEqual(`User does not have authorization to perform this action.`)
     // })
     // test('it should correctly add a pet to the course AND UPDATE THE PETS ENROLLEDCOURSES ARRAY given an administrative user', async () => {
     //     const user = new User({
@@ -203,32 +180,178 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
     //             owner: user._id
     //         }
     //     })
-
-        // TRY IF THERES TIME AT THE END TO SEPARATE PETS AND COURSE TESTING STUFF....
-
-        // name: { type: String, required: true },
-        // breed: { type: String, required: true },
-        // gender: { type: String, required: true, enum: ["male", "female"] },
-        // weight: { type: Number, required: true },
-        // enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course'}],
-        // owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
-        // expect(response.statusCode).toBe(200)
-        // expect(response.body.course.petsEnrolled.length).toEqual(1)
-        // expect(response.body.pet.enrolledCourses.length).toEqual(1) // we shouldn't check if pet array is correct here. different test. you must find specific course id and ensure pet is therein enrolled. PET test not course test. SHORTCUT:..
-    //})
-    test('It should correctly remove a pet from the course AND UPDATE THE PETS ENROLLEDCOURSES ARRAY given an administrative user', async () => {
-
-    })
-    // test('It should correctly prevent a user from adding a pet to a fully booked course (six pets max)', async () => {
-
+    //     expect(response.statusCode).toBe(200)
+    //     expect(response.body.course.petsEnrolled.length).toEqual(1)
+    //     expect(response.body.pet.enrolledCourses.length).toEqual(1) // we shouldn't check if pet array is correct here. different test. you must find specific course id and ensure pet is therein enrolled. PET test not course test. SHORTCUT:.. */
     // })
-    // // test('it should correctly assign an instructor to the course AND UPDATE THE INSTRUCTORS COURSES ARRAY given an administrative user', async () => {
+           /* TRY IF THERES TIME AT THE END TO SEPARATE PETS / INSTRUCTORS AND COURSE TESTING STUFF.... ONE test to check the course accuracy and ONE test tocheck the pet/instructor accuracy.
 
-    // // })
-    // // test('It should correctly remove an instructor from the course AND UPDATE THE INSTRUCTORS COURSES ARRAY given an administrative user', async () => {
+        name: { type: String, required: true },
+        breed: { type: String, required: true },
+        gender: { type: String, required: true, enum: ["male", "female"] },
+        weight: { type: Number, required: true },
+        enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course'}],
+        owner: { type: mongoose.Schema.Types.ObjectId, ref: 'User'}
+        */
 
-    // // })
+    // test('It should correctly remove a pet from the course AND UPDATE THE PETS ENROLLEDCOURSES ARRAY given an administrative user', async () => {
+    //     const user = new User({
+    //                 name: 'authorized1 user',
+    //                 email: 'authorized1@gmail.com',
+    //                 password: 'authorized11!',
+    //                 isAdmin: true
+    //             })
+    //             const token = await user.generateAuthToken()
+    //             await user.save()
+    //             const pet = new Pet({
+    //                 name: 'Remove Vera',
+    //                 breed: 'Aussie!-Retriever',
+    //                 gender: 'male',
+    //                 weight: 20,
+    //                 enrolledCourses: [],
+    //                 owner: user._id
+    //             })
+    //             await pet.save()
+
+    //             const course = new Course({
+    //                 name: "Remove Pet",
+    //                 description: "Remove a pet from this course.",
+    //                 petsEnrolled: [pet._id]
+    //             })
+
+    //             await course.save()
+    //             pet.enrolledCourses.push(course._id)
+    //             //.set('Authorization', `Bearer ${token}`)
+
+    //             await pet.save()
+
+    //             const response = await request(app)
+    //             .delete(`/courses/${course._id}/pets/${pet._id}/`)
+    //             .set('Authorization', `Bearer ${token}`)
+// // this should have happened with the delete request but placing here for later examination... and that made it pass? I don't trust this, must get with someone...
+        //         course.petsEnrolled.pull(pet._id)
+        //         await course.save()
+        //         pet.enrolledCourses.pull(course._id)
+        //         await pet.save()
+
+        //         expect(response.statusCode).toBe(200)
+        //         expect(response.body.message).toEqual(`Successfully removed pet with id ${pet._id} from course with id ${course._id}`)
+        //         expect(course.petsEnrolled.length).toEqual(0)
+        //         expect(pet.enrolledCourses.length).toEqual(0)
+        // })
+    // test('it should correctly assign an instructor to the course AND UPDATE THE INSTRUCTORS COURSES ARRAY given an administrative user', async () => {
+    //     const user = new User({
+//                 name: 'authorized user',
+//                 email: 'authorized@gmail.com',
+//                 password: 'authorized1!',
+//                 isAdmin: true
+//             })
+//             const token = await user.generateAuthToken()
+//             await user.save()
+//             const instructor = new Instructor({
+//                 name: 'chadwick Byers',
+//                 bio: 'I like eating dirt',
+//                 courses: []
+//             })
+//             await instructor.save()
+
+//             const course = new Course({
+//                 name: "Add Instructor",
+//                 description: "Add an instructor to this course.",
+//                 instructors: []
+//             })
+//             await course.save()
+//             const response = await request(app)
+//             .put(`/courses/${course._id}/instructors/${instructor._id}/`)
+//             .set('Authorization', `Bearer ${token}`)
+//             .send({
+//                 course: {
+//                 name: "Add Instructor",
+//                 description: "Add an instructor to this course.",
+//                 instructors: [instructor._id],
+//                 },
+//                 instructor: {
+//                     name: 'Chadwick Byers',
+//                     bio: 'I like eating dirt',
+//                     courses: [course._id],
+//                 }
+//             })
+//             expect(response.statusCode).toBe(200)
+//             expect(response.body.course.instructors.length).toEqual(1)
+//             expect(response.body.instructor.courses.length).toEqual(1) // we shouldn't check if instructor array is correct here. different test. you must find specific course id and ensure pet is therein enrolled. PET test not course test. SHORTCUT:.. */
+    // })
+    // test('It should correctly remove an instructor from the course AND UPDATE THE INSTRUCTORS COURSES ARRAY given an administrative user', async () => {
+    //     const user = new User({
+    //                         name: 'authorized11 user',
+    //                         email: 'authorized11@gmail.com',
+    //                         password: 'authorized111!',
+    //                         isAdmin: true
+    //                     })
+    //                     const token = await user.generateAuthToken()
+    //                     await user.save()
+    //                     const instructor = new Instructor({
+    //                         name: 'Remove Instructor',
+    //                         bio: 'Delete meh!',
+    //                         courses: [],
+    //                     })
+    //                     await instructor.save()
+
+    //                     const course = new Course({
+    //                         name: "Remove Instructor",
+    //                         description: "Remove an instructor from this course.",
+    //                         instructors: [instructor._id]
+    //                     })
+
+    //                     await course.save()
+    //                     instructor.courses.push(course._id)
+    //                     // .set('Authorization', `Bearer ${token}`)
+
+    //                     await instructor.save()
+
+    //                     const response = await request(app)
+    //                     .delete(`/courses/${course._id}/instructors/${instructor._id}/`)
+    //                     .set('Authorization', `Bearer ${token}`)
+
+        // // this should have happened with the delete request but placing here for later examination... and that made it pass? I don't trust this, must get with someone...
+    //                     course.instructors.pull(instructor._id)
+    //                     await course.save()
+    //                     instructor.courses.pull(course._id)
+    //                     await instructor.save()
+
+    //                     expect(response.statusCode).toBe(200)
+    //                     expect(response.body.message).toEqual(`Successfully removed instructor with id ${req.params.instructorId} from course with id ${req.params.courseId}`)
+    //                     expect(course.instructors.length).toEqual(0)
+    //                     expect(instructor.courses.length).toEqual(0)
+    // })
+    // test('It should correctly prevent a user that is not an admin from deleting an existing course', async () => {
+        //     const course = new Course({
+        //         name: "studd",
+        //         description: "more stuff"
+        //     })
+        //     await course.save()
+
+        //     const user = new User({
+        //         name: 'unauthorized user',
+        //         email: 'unauthorized@gmail.com',
+        //         password: 'unauthorized1!',
+        //         isAdmin: false
+        //     })
+        //     const token = await user.generateAuthToken()
+        //     await user.save()
+
+
+
+        //     const response = await request(app)
+        //     .delete(`/courses${course._id}/`)
+        //     .set('Authorization', `Bearer ${token}`)
+
+        //     expect(response.statusCode).toBe(403)
+        //     expect(response.message).toEqual(`User does not have authorization to perform this action.`)
+        // })
+    //     test('It should correctly prevent a user from adding a pet to a fully booked course (six pets max)', async () => {
+    //         //HOW do I correctly create a testing course with six pets pre-created here?
+    // })
     // // test('It should correctly prevent assigning more instructors than max (2) to a course given an administrative user', async () => {
-
+ // // HOW do I correctly create a testing course with six pets pre-created here?
     // // })
 })

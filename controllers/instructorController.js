@@ -1,17 +1,12 @@
-// Is there a way that we can prevent an instructor from taking on more than three courses and six dogs per course? Bonus round that one if able. --> add if then statement to route. if array.length < 3 do stuff, else res.status message.
-
-// We should only be able to delete, create, or update an instructor if we have admin privileges...
-
-// how do we permit authorization token usage again when applying to routes not on user list?
-
-// if length is six, dont allow more. That's all you need for the add instructor. if length of instructors in course is already max, return message reached max. Get proper syntax on investigation. Google search all the different 200 responses and see which one fits best for your response. 'logically you can think like the user tried to add an instructor when they couldn't. send 403 forbidden response. OR. the 200 ish 'we would but we couldn't. just be clear in message that operation not performed.
-
-// must create user variables with admin powers in course / instructor tests.
-// must create user variable WITHOUT admin powers in course / instructor tests to evaluate admin restrictions.
-//
-
 const Instructor = require('../models/instructor')
 const Course = require('../models/course')
+
+
+exports.instructorLimitCheck = async function (req, res) {
+                const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
+            if(!foundInstructor) throw new Error(`Could not locate instructor with id ${req.params.instructorId}`)
+            if(foundInstructor.courses.length >= 3) throw new Error(`Instructor with id ${req.params.instructorId} is already assigned the maximum number of courses.`)
+}
 
 exports.index = async function (req, res) {
     try {

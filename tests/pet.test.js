@@ -1,23 +1,3 @@
-/*
-
-pet model:
-    name: { type: String, required: true },
-    Breed: { type: String, required: true },
-    Gender: { type: String, required: true },
-    Weight: { type: Number, required: true },
-    enrolledCourses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course'}]
-
-user model:
-
-    name: { type: String, required: true },
-    email: { type: String, required: true, unique: true },
-    password: { type: String, required: true },
-    enrolledPets: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Pet'}],
-    isAdmin: [{ type: Boolean, required: true, defaultValue: false }]
-},
-
-*/
-
 const mongoose = require('mongoose')
 const app = require('../app')
 const { MongoMemoryServer } = require('mongodb-memory-server')
@@ -47,7 +27,7 @@ describe('Testing Pet end points for RESTFUL JSON API', () => {
         await pet.save()
         user.enrolledPets.push(pet._id)
         await user.save()
-//must send authorization as well via header.
+
         const response = await request(app).get(`/pets/`).set('Authorization', `Bearer ${token}`)
 
 
@@ -118,7 +98,7 @@ describe('Testing Pet end points for RESTFUL JSON API', () => {
 
         const response = await request(app)
         .delete(`/pets/${pet._id}/`).set('Authorization', `Bearer ${token}`)
-// it's like a circle; you have to keep looking back at the database for the change acknowledgement. see expect test below.
+
         expect(response.body.user.enrolledPets.length).toEqual(0)
         expect(response.statusCode).toBe(200)
         expect(response.body.message).toEqual(`The pet with the ID of ${pet._id} was deleted from the MongoDB database; no further action necessary`)

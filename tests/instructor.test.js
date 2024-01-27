@@ -1,12 +1,3 @@
-/*
-Instructor Model
-    name: { type: String, required: true },
-    bio: { type: String, required: true },
-    courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course'}],
-    Testimonials: [""]
-*/
-
-// Right now my tests involving model arrays is not working. Must examine as able.
 const mongoose = require('mongoose')
 const app = require('../app')
 const { MongoMemoryServer } = require('mongodb-memory-server')
