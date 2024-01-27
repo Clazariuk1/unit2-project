@@ -38,7 +38,7 @@ afterAll(async () => {
     mongoServer.stop()
     server.close()
 })
-// I feel like my routes are currently incorrect and need to be rectified. Am I supposed to make a mock user like I'm doing below or no?
+
 describe('Testing Pet end points for RESTFUL JSON API', () => {
     test('Display a given users index of their enrolled pets', async () => {
         const user = new User({name: 'Pet User', email: 'pet.email@gmail.com', password: 'IhateThis2', enrolledPets: [], isAdmin: false })
@@ -119,7 +119,6 @@ describe('Testing Pet end points for RESTFUL JSON API', () => {
         const response = await request(app)
         .delete(`/pets/${pet._id}/`).set('Authorization', `Bearer ${token}`)
 // it's like a circle; you have to keep looking back at the database for the change acknowledgement. see expect test below.
-        console.log(response.body)
         expect(response.body.user.enrolledPets.length).toEqual(0)
         expect(response.statusCode).toBe(200)
         expect(response.body.message).toEqual(`The pet with the ID of ${pet._id} was deleted from the MongoDB database; no further action necessary`)

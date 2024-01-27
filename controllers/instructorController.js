@@ -22,9 +22,9 @@ exports.index = async function (req, res) {
     }
 }
 
-exports.create = async function create (req, res) {
+exports.create = async function (req, res) {
         try {
-            const instructor = instructor.create(req.body)
+            const instructor = await Instructor.create(req.body)
             res.status(200).json(instructor)
         } catch (error) {
             res.status(400).json({ message: error.message })

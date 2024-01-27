@@ -8,11 +8,21 @@ course model
 
 const Course = require('../models/course')
 const Instructor = require('../models/instructor')
+const Pet = require('../models/pet')
+
+exports.petEnrollmentCheck = async (req, res, next) => {
+    const foundCourse = await Course.findOne({_id: req.params.courseId })
+    if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
+    if(foundCourse.petsEnrolled.length >= 6 ) {
+        res.status(403).json({ message: `This course is already at maximum enrollment for pets; please contact admins to join waitlist.`})
+    }
+    next()
+}
 
 exports.index = async function (req, res) {
     try {
-        const courses = await Course.find({}).populate('instructors')
-        res.status(200).json(courses)
+        const foundCourses = await Course.find({}).populate('instructors') // does populate break code if there are no instructors at all?
+        res.status(200).json(foundCourses)
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
@@ -29,13 +39,13 @@ exports.show = async function show (req, res) {
 
 exports.enrollPet = async function enrollPet(req, res) {
     try {
-        const foundPet = await Pet.findOne({_id: req.params.id, user: req.user._id })
+        const foundPet = await Pet.findOne({_id: req.params.petId })
         if(!foundPet) throw new Error(`Could not locate pet with id ${req.params.petId}`)
         const foundCourse = await Course.findOne({_id: req.params.courseId })
-        if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
-        if(foundCourse.petsEnrolled.length >= 6 ) {
-            res.status(403).json({ message: `This course is already at maximum enrollment for pets; please contact admins to join waitlist.`})
-        }
+        // if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
+        // if(foundCourse.petsEnrolled.length >= 6 ) {
+        //     res.status(403).json({ message: `This course is already at maximum enrollment for pets; please contact admins to join waitlist.`})
+        // } //am I correct that the foundCourse data will still be preserved during petEnrollmentCheck??
         foundCourse.petsEnrolled.push(foundPet._id)
         foundPet.enrolledCourses.push(foundCourse._id)
         await foundCourse.save()
@@ -43,7 +53,10 @@ exports.enrollPet = async function enrollPet(req, res) {
         res.status(200).json({
             msg: `Successfully enrolled pet with id ${req.params.petId} into course with id ${req.params.courseId}`,
             course: foundCourse,
-            petsEnrolled: foundPet
+            pet: foundPet,
+            description: "Oh noetry have some bad poetry",
+            // petsEnrolled: [...petsEnrolled, foundPet._id]
+
         })
     } catch (error) {
         res.status(400).json({ message: error.message })
@@ -54,7 +67,7 @@ exports.enrollPet = async function enrollPet(req, res) {
 
 exports.create = async function create(req, res) {
     try {
-        const course = course.create(req.body)
+        const course = await Course.create(req.body)
         res.status(200).json(course)
     } catch (error) {
         res.status(400).json({ message: error.message })
@@ -70,6 +83,8 @@ exports.update = async function update(req, res) {
     }
 }
 
+// would Instructor.find({courseId: deleted._id}) work to find any instructor iwth the array of course? make a .pull to remove from array?
+// example: req.user.enrolledPets.pull(deleted._id)
 exports.destroy = async function destroy(req, res) {
     try {
         const deleted = await Course.findOneAndDelete({_id: req.params.id })
@@ -129,6 +144,8 @@ exports.removePet = async function removePet(req, res) {
             if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
             foundCourse.petsEnrolled.splice(foundCourse.petsEnrolled.indexOf(foundPet), 1)
             await foundCourse.save()
+            foundPet.enrolledCourses.splice(foundPet.enrolledCourses.indexOf(foundCourse), 1)
+            await foundPet.save()
             res.status(200).json({
                 msg: `Successfully removed pet with id ${req.params.petId} from course with id ${req.params.courseId}`,
                 course: foundCourse
