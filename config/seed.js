@@ -50,7 +50,7 @@ const seed = async () => {
             gender: "female",
             weight: 76,
             enrolledCourses: [],
-            owner: '65b5e31fb12996846be76f04',
+            owner: '65b68a34a4bcab1c7fa45f70'
         },
         {
             name: "Zrahzdee",

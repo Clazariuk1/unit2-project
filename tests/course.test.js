@@ -177,8 +177,8 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
                 await user.save()
                 const pet = new Pet({
                     name: 'Remove Vera',
-                    breed: 'Aussie!-Retriever',
-                    gender: 'male',
+                    breed: 'Aussie-Retriever',
+                    gender: 'female',
                     weight: 20,
                     enrolledCourses: [],
                     owner: user._id
@@ -192,7 +192,8 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
                 })
 
                 await course.save()
-                pet.enrolledCourses.push(course._id)
+                // course.pet.splice(course.petsEnrolled.indexOf())
+                // pet.enrolledCourses.push(course._id)
                 await pet.save()
 
                 const response = await request(app)
@@ -201,6 +202,8 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
 
                 course.petsEnrolled.pull(pet._id)
                 await course.save()
+                console.log(course)
+                console.log(pet)
                 pet.enrolledCourses.pull(course._id)
                 await pet.save()
 
