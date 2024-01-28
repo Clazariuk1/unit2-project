@@ -2,7 +2,7 @@ const Pet = require('../models/pet')
 
 exports.index = async function (req, res) {
     try {
-        const pets = await Pet.find({user: req.user._id })
+        const pets = await Pet.find({owner: req.user._id })
         res.status(200).json(pets)
     } catch (error) {
         res.status(400).json({ message: error.message })
@@ -12,6 +12,10 @@ exports.index = async function (req, res) {
 exports.create = async function create (req, res) {
     try {
         const pet = await Pet.create(req.body)
+        pet.owner = req.user._id
+        await pet.save()
+        req.user.enrolledPets.push(pet._id)
+        await req.user.save()
         res.status(200).json(pet)
     } catch (error) {
         res.status(400).json({ message: error.message })

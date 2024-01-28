@@ -46,7 +46,8 @@ exports.enrollPet = async function enrollPet(req, res) {
         // if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
         // if(foundCourse.petsEnrolled.length >= 6 ) {
         //     res.status(403).json({ message: `This course is already at maximum enrollment for pets; please contact admins to join waitlist.`})
-        // } //am I correct that the foundCourse data will still be preserved during petEnrollmentCheck??
+        // }
+        //am I correct that the foundCourse data will still be preserved during petEnrollmentCheck?? It works for now but it doesn't appear my edge cases are working out.
         foundCourse.petsEnrolled.push(foundPet._id)
         foundPet.enrolledCourses.push(foundCourse._id)
         await foundCourse.save()
@@ -107,9 +108,9 @@ exports.removeInstructor = async function removeInstructor(req, res) {
             if(!foundInstructor) throw new Error(`Could not locate instructor with id ${req.params.instructorId}`)
             const foundCourse = await Course.findOne({_id: req.params.courseId })
             if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
-            foundCourse.instructorsAssigned.splice(instructorsAssigned.indexOf(foundInstructor), 1)
-            foundInstructor.courses.splice(foundInstructor.courses.indexOf(foundCourse), 1)
+            foundCourse.instructors.splice(instructorsAssigned.indexOf(foundInstructor), 1)
             await foundCourse.save()
+            foundInstructor.courses.splice(foundInstructor.courses.indexOf(foundCourse), 1)
             await foundInstructor.save()
             res.status(200).json({
                 msg: `Successfully removed instructor with id ${req.params.instructorId} from course with id ${req.params.courseId}`
@@ -123,14 +124,14 @@ exports.addInstructor = async function addInstructor(req, res) {
         try {
             const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
             if(!foundInstructor) throw new Error(`Could not locate instructor with id ${req.params.instructorId}`)
-            if(foundInstructor.courses.length >= 4) throw new Error(`Instructor with id ${req.params.instructorId} is already assigned the maximum number of courses.`)
+            // if(foundInstructor.courses.length >= 4) throw new Error(`Instructor with id ${req.params.instructorId} is already assigned the maximum number of courses.`)
 
             const foundCourse = await Course.findOne({_id: req.params.courseId })
             if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
-            if(foundCourse.instructorsAssigned.length >= 2) {
-                res.status(403).json({ message: `This course is already at maximum assignment for instructors.`})
-            }
-            foundCourse.instructorsAssigned.push(foundInstructor._id)
+            // if(foundCourse.instructorsAssigned.length >= 2) {
+            //     res.status(403).json({ message: `This course is already at maximum assignment for instructors.`})
+            // }
+            foundCourse.instructors.push(foundInstructor._id)
             foundInstructor.courses.push(foundCourse._id)
             await foundCourse.save()
             await foundInstructor.save()

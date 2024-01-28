@@ -15,7 +15,11 @@ How to start the app without dev mode.<br>
 <h5>Link to Trello Board: https://trello.com/b/1r0vkXFZ/patient-paws-training-academy</h5>
 <br>
 <h3>Unit Testing instructions</h3>
-<p>After successfully cloning and opening into your desired local folder location, open the project within VS Code by typing 'code .' within your terminal while in the cloned folder.
+<p>After successfully cloning into your desired local folder location from github, navigate to project folder via terminal command line.
+<br>
+type 'touch .env' to create a new env file. The three sets of data you must then enter: <br>'MONGO_URI=<enterLinkInformationToYourPreferedDataBaseSetup>'<br>'SECRET=<enterSHA-256encryptionToPreferredSecretPassword>'<br>'SEED_PASSWORD=<enterYourDesiredMockPasswordForSeedFiles>'
+<br>
+SAVE FILE.
 <br>
 Necessary packages to install: type the following verbatim into terminal's command line while in working project folder: npm i express mongoose morgan bcrypt jsonwebtoken
 <br>
@@ -24,6 +28,7 @@ Necessary dev packages to install: type the following verbatim into terminal's c
 open up the project with 'code .' if you haven't done so already. Open terminal on project folder location within VS code and type 'npm run test' after verifying you're in the project folder.
 The test files in the tests folder will execute and return the corresponding results.
 <br>
+Before initial rounds of testing, or to reset database per needs, type 'npm run seed' in command line while in project folder.
 </p>
 
 <br>

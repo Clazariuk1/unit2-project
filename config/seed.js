@@ -1,4 +1,4 @@
-// when developing, npm run seed executes this file. it deletes the database and replaces it with predetermined data. this allows time saving when dealing with large quantity testing. turns application into a sandbox. run the file between demos and interviews, start with fresh material every time.
+// Developer note: while terminal is open in project folder, type 'npm run seed' to reset the database to starting objects. PERMANENTLY deletes originals and makes re-start copies / predetermined data. This allows time saving when dealing with large quantity testing; it turns application into a sandbox. Run the file between demos or interviews, start with fresh material every time.
 
 require('dotenv').config()
 require('./database')
@@ -45,7 +45,15 @@ const seed = async () => {
     await Pet.deleteMany({})
     const pets = await Pet.create([
         {
-            name: "Stacy",
+            name: "Inserter",
+            breed: "Testing number",
+            gender: "female",
+            weight: 76,
+            enrolledCourses: [],
+            owner: '65b5e31fb12996846be76f04',
+        },
+        {
+            name: "Zrahzdee",
             breed: "Siberian Husky",
             gender: "female",
             weight: 76,
@@ -61,7 +69,7 @@ const seed = async () => {
             owner: '65b57002f8a603f86311c1c2',
         },
         {
-            name: "Karen",
+            name: "Commander Shepherd",
             breed: "German Shepherd",
             gender: "female",
             weight: 82,
@@ -69,7 +77,7 @@ const seed = async () => {
             owner: '65b57002f8a603f86311c1c2',
         },
         {
-            name: "Marcus",
+            name: "Pitbul",
             breed: "Pitbull",
             gender: "male",
             weight: 87,
