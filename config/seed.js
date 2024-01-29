@@ -45,14 +45,6 @@ const seed = async () => {
     await Pet.deleteMany({})
     const pets = await Pet.create([
         {
-            name: "Inserter",
-            breed: "Testing number",
-            gender: "female",
-            weight: 76,
-            enrolledCourses: [],
-            owner: users[3]._id // Kevin Bacon owner
-        },
-        {
             name: "Zrahzdee",
             breed: "Siberian Husky",
             gender: "female",
@@ -136,6 +128,10 @@ const seed = async () => {
         }
     ])
 
+    const kevinBacon = await User.findOneAndUpdate({_id: users[3]._id},{
+        $set: {enrolledPets: [...pets]}
+    })
+
     instructor.courses.push(...courses)
     await instructor.save()
 
@@ -160,6 +156,15 @@ const seed = async () => {
     const allPets = await Pet.updateMany({},
         {
         $set: {enrolledCourses: [courses[0]._id]}
+        })
+
+        const backupPet = await Pet.create({
+            name: "Inserter",
+            breed: "Edge Case Testing",
+            gender: "female",
+            weight: 76,
+            enrolledCourses: [],
+            owner: users[3]._id // Kevin Bacon owner
         })
 
     process.exit()
