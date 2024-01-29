@@ -56,21 +56,21 @@ Before initial rounds of testing, or to reset database per needs, type 'npm run 
     <li><strong>Update Pet:</strong>Put request to localhost:3000/pets/petId</li>
     <li><strong>Delete Pet:</strong>Delete request to localhost:3000/pets/pedId</li>
     <br>
-    <li><strong>Index of Instructors:</strong>localhost:3000/instructors/</li>
+    <li><strong>Index of Instructors:</strong>Get request to localhost:3000/instructors/</li>
     <li><strong>Create Instructor:</strong>Post request to localhost:3000/instructors/</li>
     <li><strong>Update Instructor:</strong>Put request to localhost:3000/instructors/instructorId</li>
     <li><strong>Show Instructor:</strong>Show request to localhost:3000/instructors/instructorId</li>
     <li><strong>Delete Instructor:</strong>Delete request to localhost:3000/instructors/instructorId</li>
-    <li><strong>Submit testimony to instructor:</strong>localhost:3000/instructors/instructorId</li>
+    <li><strong>Submit testimony to instructor:</strong>Put request to localhost:3000/instructors/instructorId</li>
     <br>
-    <li><strong>Index of Courses:</strong>localhost:3000/courses/</li>
-    <li><strong>Show Course:</strong>localhost:3000/courses/courseId</li>
-    <li><strong>Enroll a pet in this course:</strong>localhost:3000/courses/courseId/pets/perId</li>
+    <li><strong>Index of Courses:</strong>Get request to localhost:3000/courses/</li>
+    <li><strong>Show Course:</strong>Get request to localhost:3000/courses/courseId</li>
+    <li><strong>Enroll a pet in this course:</strong>Put request to localhost:3000/courses/courseId/pets/perId</li>
     <li><strong>ADMIN- Create Course:</strong>Post request to localhost:3000/courses/</li>
     <li><strong>ADMIN- Update Course:</strong>Put request to localhost:3000/courses/courseId</li>
     <li><strong>ADMIN- Delete Course:</strong>Delete request to localhost:3000/courses/courseId</li>
-    <li><strong>ADMIN- Remove a pet from this course:</strong>localhost:3000/courses/courseId/pets/petId</li>
-    <li><strong>ADMIN- Add an instructor to this course:</strong>localhost:3000/courses/courseId/instructors/instructorId</li>
+    <li><strong>ADMIN- Remove a pet from this course:</strong>Delete request to localhost:3000/courses/courseId/pets/petId</li>
+    <li><strong>ADMIN- Add an instructor to this course:</strong>Put request to localhost:3000/courses/courseId/instructors/instructorId</li>
     <li><strong>ADMIN- Remove an instructor from this course:</strong>Delete request to localhost:3000/courses/courseId/instructors/instructorId</li>
     </ul>
 <br>
