@@ -41,8 +41,37 @@ The test files in the tests folder will execute and return the corresponding res
 <br>
 Before initial rounds of testing, or to reset database per needs, type 'npm run seed' in command line while in project folder.
 </p>
-
 <br>
-
+<h3>The Routes and Instructions for manual testing with Postman.</h3>
+<h4>Follow pet/user/course/instructor models when crafting request bodies through Postman. Don't have Postman? Download/Install onto VS Code and get crackin'.</h4>
+    <ul>
+    <li><strong>Create User:</strong>Post request to localhost:3000/user/</li>
+    <li><strong>Login User:</strong>Post request to localhost:3000/user/login</li>
+    <li><strong>Update User:</strong>Put request to localhost:3000/user/userId</li>
+    <li><strong>Delete User:</strong>Delete request to localhost:3000/user/userId</li>
+    <br>
+    <li><strong>Create Pet:</strong>Post request to localhost:3000/pets/</li>
+    <li><strong>Index of Pets:</strong>Get request to localhost:3000/pets/newPet</li>
+    <li><strong>Show One Pet:</strong>Get request to localhost:3000/pets/petId</li>
+    <li><strong>Update Pet:</strong>Put request to localhost:3000/pets/petId</li>
+    <li><strong>Delete Pet:</strong>Delete request to localhost:3000/pets/pedId</li>
+    <br>
+    <li><strong>Index of Instructors:</strong>localhost:3000/instructors/</li>
+    <li><strong>Create Instructor:</strong>Post request to localhost:3000/instructors/</li>
+    <li><strong>Update Instructor:</strong>Put request to localhost:3000/instructors/instructorId</li>
+    <li><strong>Show Instructor:</strong>Show request to localhost:3000/instructors/instructorId</li>
+    <li><strong>Delete Instructor:</strong>Delete request to localhost:3000/instructors/instructorId</li>
+    <li><strong>Submit testimony to instructor:</strong>localhost:3000/instructors/instructorId</li>
+    <br>
+    <li><strong>Index of Courses:</strong>localhost:3000/courses/</li>
+    <li><strong>Show Course:</strong>localhost:3000/courses/courseId</li>
+    <li><strong>Enroll a pet in this course:</strong>localhost:3000/courses/courseId/pets/perId</li>
+    <li><strong>ADMIN- Create Course:</strong>Post request to localhost:3000/courses/</li>
+    <li><strong>ADMIN- Update Course:</strong>Put request to localhost:3000/courses/courseId</li>
+    <li><strong>ADMIN- Delete Course:</strong>Delete request to localhost:3000/courses/courseId</li>
+    <li><strong>ADMIN- Remove a pet from this course:</strong>localhost:3000/courses/courseId/pets/petId</li>
+    <li><strong>ADMIN- Add an instructor to this course:</strong>localhost:3000/courses/courseId/instructors/instructorId</li>
+    <li><strong>ADMIN- Remove an instructor from this course:</strong>Delete request to localhost:3000/courses/courseId/instructors/instructorId</li>
+    </ul>
 <br>
 </ol>
