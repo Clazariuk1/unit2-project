@@ -2,24 +2,6 @@ const Course = require('../models/course')
 const Instructor = require('../models/instructor')
 const Pet = require('../models/pet')
 
-exports.courseInstructorLimitCheck = async (req, res, next) => {
-    const foundCourse = await Course.findOne({_id: req.params.courseId })
-        if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
-    if(foundCourse.instructorsAssigned.length >= 2) {
-        res.status(403).json({ message: `This course is already at maximum assignment for instructors.`})
-    }
-    next()
-}
-
-exports.petEnrollmentCheck = async (req, res, next) => {
-    const foundCourse = await Course.findOne({_id: req.params.courseId })
-    if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
-    if(foundCourse.petsEnrolled.length >= 6 ) {
-        res.status(403).json({ message: `This course is already at maximum enrollment for pets; please contact admins to join waitlist.`})
-    }
-    next()
-}
-
 exports.index = async function (req, res) {
     try {
         const foundCourses = await Course.find({}).populate('instructors')
@@ -101,7 +83,25 @@ exports.destroy = async function destroy(req, res) {
         res.status(400).json({ message: error.message })
     }
 }
-// Double Book logic is not working at present, must rectify.
+
+exports.courseInstructorLimitCheck = async (req, res, next) => {
+    const foundCourse = await Course.findOne({_id: req.params.courseId })
+        if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
+    if(foundCourse.instructorsAssigned.length >= 2) {
+        res.status(403).json({ message: `This course is already at maximum assignment for instructors.`})
+    }
+    next()
+}
+
+exports.petEnrollmentCheck = async (req, res, next) => {
+    const foundCourse = await Course.findOne({_id: req.params.courseId })
+    if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
+    if(foundCourse.petsEnrolled.length >= 6 ) {
+        res.status(403).json({ message: `This course is already at maximum enrollment for pets; please contact admins to join waitlist.`})
+    }
+    next()
+}
+// Double Book logic is not working at present, must rectify. My .includes isnt doing what it should
 exports.doubleBookedInstructorCheck = async (req, res, next) => {
     const foundCourse = await Course.findOne({_id: req.params.courseId })
     const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
@@ -139,14 +139,14 @@ exports.petEnrollmentCheck = async (req, res, next) => {
     }
     next()
 }
-
+// remove instructor now working but it's not throwing error when no foundInstructor, only doing successfully removed.
 exports.removeInstructor = async function removeInstructor(req, res) {
         try {
             const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
             if(!foundInstructor) throw new Error(`Could not locate instructor with id ${req.params.instructorId}`)
             const foundCourse = await Course.findOne({_id: req.params.courseId })
             if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
-            foundCourse.instructors.splice(instructors.indexOf(foundInstructor), 1)
+            foundCourse.instructors.splice(foundCourse.instructors.indexOf(foundInstructor), 1)
             await foundCourse.save()
             foundInstructor.courses.splice(foundInstructor.courses.indexOf(foundCourse), 1)
             await foundInstructor.save()
