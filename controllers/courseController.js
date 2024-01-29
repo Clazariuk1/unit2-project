@@ -101,7 +101,7 @@ exports.destroy = async function destroy(req, res) {
         res.status(400).json({ message: error.message })
     }
 }
-
+// Double Book logic is not working at present, must rectify.
 exports.doubleBookedInstructorCheck = async (req, res, next) => {
     const foundCourse = await Course.findOne({_id: req.params.courseId })
     const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
@@ -125,7 +125,7 @@ exports.doubleBookedPetCheck = async (req, res, next) => {
 exports.courseInstructorLimitCheck = async (req, res, next) => {
     const foundCourse = await Course.findOne({_id: req.params.courseId })
         if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
-    if(foundCourse.instructorsAssigned.length >= 2) {
+    if(foundCourse.instructors.length >= 2) {
         res.status(403).json({ message: `This course is already at maximum assignment for instructors.`})
     }
     next()
@@ -146,7 +146,7 @@ exports.removeInstructor = async function removeInstructor(req, res) {
             if(!foundInstructor) throw new Error(`Could not locate instructor with id ${req.params.instructorId}`)
             const foundCourse = await Course.findOne({_id: req.params.courseId })
             if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
-            foundCourse.instructors.splice(instructorsAssigned.indexOf(foundInstructor), 1)
+            foundCourse.instructors.splice(instructors.indexOf(foundInstructor), 1)
             await foundCourse.save()
             foundInstructor.courses.splice(foundInstructor.courses.indexOf(foundCourse), 1)
             await foundInstructor.save()
