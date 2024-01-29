@@ -102,6 +102,44 @@ exports.destroy = async function destroy(req, res) {
     }
 }
 
+exports.doubleBookedInstructorCheck = async (req, res, next) => {
+    const foundCourse = await Course.findOne({_id: req.params.courseId })
+    const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
+    if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
+    if(foundCourse.instructors.includes({_id: foundInstructor._id })){
+        res.status(403).json({ message: `This instructor is already signed up for this course Don't Double book!`})
+    }
+    next()
+}
+
+exports.doubleBookedPetCheck = async (req, res, next) => {
+    const foundCourse = await Course.findOne({_id: req.params.courseId })
+    const foundPet = await Pet.findOne({_id: req.params.petId })
+    if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
+    if(foundCourse.petsEnrolled.includes({_id: foundPet._id })){
+        res.status(403).json({ message: `This pet is already signed up for this course Don't Double book!`})
+    }
+    next()
+}
+
+exports.courseInstructorLimitCheck = async (req, res, next) => {
+    const foundCourse = await Course.findOne({_id: req.params.courseId })
+        if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
+    if(foundCourse.instructorsAssigned.length >= 2) {
+        res.status(403).json({ message: `This course is already at maximum assignment for instructors.`})
+    }
+    next()
+}
+
+exports.petEnrollmentCheck = async (req, res, next) => {
+    const foundCourse = await Course.findOne({_id: req.params.courseId })
+    if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId }`)
+    if(foundCourse.petsEnrolled.length >= 6 ) {
+        res.status(403).json({ message: `This course is already at maximum enrollment for pets; please contact admins to join waitlist.`})
+    }
+    next()
+}
+
 exports.removeInstructor = async function removeInstructor(req, res) {
         try {
             const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
@@ -124,13 +162,10 @@ exports.addInstructor = async function addInstructor(req, res) {
         try {
             const foundInstructor = await Instructor.findOne({_id: req.params.instructorId })
             if(!foundInstructor) throw new Error(`Could not locate instructor with id ${req.params.instructorId}`)
-            // if(foundInstructor.courses.length >= 4) throw new Error(`Instructor with id ${req.params.instructorId} is already assigned the maximum number of courses.`)
 
             const foundCourse = await Course.findOne({_id: req.params.courseId })
             if(!foundCourse) throw new Error(`Could not locate course with id ${req.params.courseId}`)
-            // if(foundCourse.instructorsAssigned.length >= 2) {
-            //     res.status(403).json({ message: `This course is already at maximum assignment for instructors.`})
-            // }
+
             foundCourse.instructors.push(foundInstructor._id)
             foundInstructor.courses.push(foundCourse._id)
             await foundCourse.save()
@@ -144,7 +179,7 @@ exports.addInstructor = async function addInstructor(req, res) {
             res.status(400).json({msg: error.message })
         }
     }
-
+// Is it an issue with _id: req.params ???
 exports.removePet = async function removePet(req, res) {
         try {
             const foundPet = await Pet.findOne({_id: req.params.petId})

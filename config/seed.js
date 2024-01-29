@@ -50,7 +50,7 @@ const seed = async () => {
             gender: "female",
             weight: 76,
             enrolledCourses: [],
-            owner: '65b68a34a4bcab1c7fa45f70'
+            owner: users[3]._id // Kevin Bacon owner
         },
         {
             name: "Zrahzdee",
@@ -58,7 +58,7 @@ const seed = async () => {
             gender: "female",
             weight: 76,
             enrolledCourses: [],
-            owner: '65b57002f8a603f86311c1c2',
+            owner: users[3]._id // Kevin Bacon owner
         },
         {
             name: "Johnny",
@@ -66,7 +66,7 @@ const seed = async () => {
             gender: "male",
             weight: 12,
             enrolledCourses: [],
-            owner: '65b57002f8a603f86311c1c2',
+            owner: users[3]._id // Kevin Bacon owner
         },
         {
             name: "Commander Shepherd",
@@ -74,15 +74,15 @@ const seed = async () => {
             gender: "female",
             weight: 82,
             enrolledCourses: [],
-            owner: '65b57002f8a603f86311c1c2',
+            owner: users[3]._id // Kevin Bacon owner
         },
         {
-            name: "Pitbul",
-            breed: "Pitbull",
+            name: "Pitbull the rapper",
+            breed: "Pitbull the dog",
             gender: "male",
             weight: 87,
             enrolledCourses: [],
-            owner: '65b57002f8a603f86311c1c2',
+            owner: users[3]._id // Kevin Bacon owner
         },
         {
             name: "Michelle",
@@ -90,7 +90,7 @@ const seed = async () => {
             gender: "female",
             weight: 22,
             enrolledCourses: [],
-            owner: '65b57002f8a603f86311c1c2',
+            owner: users[3]._id // Kevin Bacon owner
         },
         {
             name: "Joey",
@@ -98,17 +98,19 @@ const seed = async () => {
             gender: "male",
             weight: 32,
             enrolledCourses: [],
-            owner: '65b57002f8a603f86311c1c2',
+            owner: users[3]._id // Kevin Bacon owner
         }
     ])
 
     await Instructor.deleteMany({})
-    const instructor = await new Instructor({
+    const instructor = await Instructor.create(
+        {
         name: "Mary Blithe",
         bio: "I saw a cloud go by when I was twelve and wanted to be an astronaut. Hire me.",
         courses: [],
         testimonials: []
-    })
+        }
+    )
 
     getPetIds()
 
@@ -124,18 +126,36 @@ const seed = async () => {
             name: "Obedience Training",
             description: "Helping your pet understanding commands.",
             petsEnrolled: [],
-            instructors: []
+            instructors: [instructor._id]
         },
         {
             name: "Competition Preparation",
             description: "Train for the trophy!",
             petsEnrolled: [],
-            instructors: []
+            instructors: [instructor._id]
         }
     ])
 
     instructor.courses.push(...courses)
     await instructor.save()
+
+    const backupInstructor = await Instructor.create(
+        {
+            name: "Max Trainer",
+            bio: "I grew up on a farm in Alaska and then decided to swim to the continental US and follow my dreams...",
+            courses: [],
+            testimonials: ["I can't believe it's not butter!"]
+        })
+
+        const max = await Instructor.findOneAndUpdate({_id: backupInstructor._id },
+        {
+            $set: {courses: [courses[0]._id]}
+        })
+
+        const courseAdd = await Course.findOneAndUpdate({_id: courses[0]._id},
+            {
+                $set: {instructors: [max._id, instructor._id]}
+            })
 
     const allPets = await Pet.updateMany({},
         {
