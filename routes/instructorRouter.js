@@ -9,6 +9,7 @@ router.post('/', userController.auth, userController.adminCheck, instructorContr
 router.put('/:id', userController.auth, userController.adminCheck, instructorController.update)
 router.delete('/:id', userController.auth, userController.adminCheck, instructorController.destroy)
 router.get('/:id', instructorController.show)
+// how do I allow NON admins to make only this one type of update?
 router.put('/:id', userController.auth, instructorController.submitTestimonial)
 
 module.exports = router
