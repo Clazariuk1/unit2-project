@@ -30,7 +30,6 @@ describe('Testing Pet end points for RESTFUL JSON API', () => {
 
         const response = await request(app).get(`/pets/`).set('Authorization', `Bearer ${token}`)
 
-
         expect(response.statusCode).toBe(200)
         expect(Array.isArray(response.body)).toBeTruthy()
         expect(user.enrolledPets.length).toEqual(1)
@@ -55,11 +54,8 @@ describe('Testing Pet end points for RESTFUL JSON API', () => {
             weight: 64,
             owner: `${user._id}`
         })
-        user.enrolledPets.push(response._id)
-        await user.save()
 
         expect(response.statusCode).toBe(200)
-        expect(user.enrolledPets.length).toEqual(1)
         expect(response.body.name).toEqual('New Vera')
         expect(response.body.breed).toEqual('Border Collie')
         expect(response.body.gender).toEqual('female')
@@ -97,7 +93,8 @@ describe('Testing Pet end points for RESTFUL JSON API', () => {
         await user.save()
 
         const response = await request(app)
-        .delete(`/pets/${pet._id}/`).set('Authorization', `Bearer ${token}`)
+        .delete(`/pets/${pet._id}/`)
+        .set('Authorization', `Bearer ${token}`)
 
         expect(response.body.user.enrolledPets.length).toEqual(0)
         expect(response.statusCode).toBe(200)

@@ -19,31 +19,62 @@ How to start the app without dev mode.<br>
 <h3>Unit Testing instructions</h3>
 <p>After successfully cloning into your desired local folder location from github, navigate to project folder via terminal command line.
 <br>
-type 'touch .env' to create a new env file. The three sets of data you must then enter are below, along with directions on what to insert within brackets: <br>'MONGO_URI=<enterLinkInformationToYourMongDBdatabase>'<br>'SECRET=<enterSHA-256-SECRET-encryptionToPreferredSecretPassword>'<br>SECRET <strong>must</strong> be a sha256 hash. Link to hashing site: https://emn178.github.io/online-tools/sha256.html
-
-<br>'SEED_PASSWORD=<enterYourDesiredMockPasswordForSeedFiles>'
-<br>
+type 'touch .env' to create a new env file. The three sets of data you must then enter are below, along with directions on what to insert within brackets: <br>
+js```'MONGO_URI=<enterLinkInformationToYourMongDBdatabase>'<br>
+'SECRET=<enterSHA-256-SECRET-encryptionToPreferredSecretPassword>'<br>
+<br>'SEED_PASSWORD=<enterYourDesiredMockPasswordForSeedFiles>'```
+SECRET <strong>must</strong> be a sha256 hash. Link to hashing site: https://emn178.github.io/online-tools/sha256.html
+<br>Once your .env is correctly created, SAVE FILE<br>
 SAVE FILE.
-<br>
+<h4>NODE VERSION REQUIREMENTS:</h4>
 In order to run this program you must have Node version 20 installed and running on your device.
 <br>
 <h5>Necessary packages to install<h5>
-<br> Type the following verbatim into terminal's command line while in working project folder:<br> npm i express mongoose morgan bcrypt jsonwebtoken
+<br> Type the following verbatim into terminal's command line while in working project folder:<br>
+js```npm i express mongoose morgan bcrypt jsonwebtoken```
 <br>
-<h5>Necessary dev packages to install</h5> Type the following verbatim into terminal's command line while in working project folder: <br> npm i -D nodemon jest supertest artillery mongo-db-memory-server
+<h5>Necessary dev packages to install</h5> Type the following verbatim into terminal's command line while in working project folder: <br>
+js```npm i -D nodemon jest supertest artillery mongo-db-memory-server```
 <br>
 Ensure that you have nodemon installed globally.
 <br>
-<h6>Now fetch!</h6>
+<h6>Time to rock 'n roll!</h6>
 <br>
-Open up the project with 'code .' if you haven't done so already. Open terminal on project folder location within VS code and type 'npm run test' after verifying you're in the project folder.
-The test files in the tests folder will execute and return the corresponding results.
+Open up the project with 'code .' if you haven't done so already. Open terminal on project folder location within VS code.
 <br>
-Before initial rounds of testing, or to reset database per needs, type 'npm run seed' in command line while in project folder.
+Before initial rounds of testing, or to reset database per needs, type 'npm run seed' in command line while in project folder. This will plant pre-set instructors, users, courses, and pets into your database for easier testing and demo purposes. <br>note: user 'Kevin Bacon' is our seed file admin user. This is the user who must be logged in to perform admin only routes manual testing through Postman.
+<br>
+Once you've grown tired of exploring the code, type 'npm run test' in terminal after verifying you're in the project's folder. The test files in the tests folder will execute and return the corresponding results.
 </p>
 <br>
 <h3>The Routes and Instructions for manual testing with Postman.</h3>
-<h4>Follow pet/user/course/instructor models when crafting request bodies through Postman. Don't have Postman? Download/Install onto VS Code and get crackin'.</h4>
+<h4>Follow pet/user/course/instructor models in the codebase when crafting request bodies through Postman. Don't have Postman? Download/Install onto VS Code and get crackin'.</h4>
+<br>Here, Have some templates to add during manual testing if you're pressed for time or creativity!<br>
+User: js```{
+    "name": "Jared Leto",
+    "email": "OscarHungry@yahoo.com",
+    "password": "<make your own, please>",
+    "isAdmin": "true"
+}```
+<br>
+Pet: js```{
+    "name": "Demo Doggo",
+    "breed": "data-dog",
+    "gender": "male",
+    "weight": 45
+}```
+<br>
+Course: js ```{
+    "name": "Demo Course",
+    "description": "Train your dog to create APIs through this exciting demo!"
+}```
+<br>
+Instructors: js```{
+    "name": "Demolition Man",
+    "bio": "Frozen in time for thirty years, only to be reawakened for this API demo..."
+}```
+<br>
+<h6>-list of all routes for Postman testing below. Always login with admin user and set authorization token in authorization column of new HTTP request in Postman before sending requests-</h6>
     <ul>
     <li><strong>Create User:</strong>Post request to localhost:3000/user/</li>
     <li><strong>Login User:</strong>Post request to localhost:3000/user/login</li>

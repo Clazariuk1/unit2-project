@@ -94,11 +94,8 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
             name: "Kill course", bio: "I exist for my courses to be removed", courses: [course._id]
         })
         await instructor.save()
-        pet.enrolledCourses.pull(course._id)
         await pet.save()
 
-        instructor.courses.pull(course._id)
-        await instructor.save()
         const response = await request(app)
 
         .delete(`/courses/${course._id}`)
@@ -106,8 +103,6 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
 
         expect(response.statusCode).toBe(200)
         expect(response.body.message).toEqual(`The course with the ID of ${course._id} was deleted from the MongoDB database; no further action necessary`)
-        expect(pet.enrolledCourses.length).toEqual(0)
-        expect(instructor.courses.length).toEqual(0)
     })
     test('It should show an existing course given a valid course id', async () => {
         const course = new Course({
@@ -141,8 +136,6 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
         const course = new Course({
             name: "Add Pet",
             description: "Add a pet to this course.",
-            // petsEnrolled: [],
-            // instructorsAssigned: []
         })
         await course.save()
         const response = await request(app).put(`/courses/${course._id}/pets/${pet._id}/`)
@@ -183,33 +176,22 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
                     enrolledCourses: [],
                     owner: user._id
                 })
-                await pet.save()
 
                 const course = new Course({
                     name: "Remove Pet",
                     description: "Remove a pet from this course.",
-                    petsEnrolled: [pet._id] // console log shows that this part is not functioning.
+                    petsEnrolled: [pet._id]
                 })
-                course.petsEnrolled.splice(course.petsEnrolled.indexOf(pet), 1)
 
                 await course.save()
-                pet.enrolledCourses.splice(pet.enrolledCourses.indexOf(pet), 1)
                 await pet.save()
 
                 const response = await request(app)
                 .delete(`/courses/${course._id}/pets/${pet._id}/`)
                 .set('Authorization', `Bearer ${token}`)
 
-                course.petsEnrolled.pull(pet._id)
-                await course.save()
-                pet.enrolledCourses.pull(course._id)
-                await pet.save()
-
                 expect(response.statusCode).toBe(200)
-                // Test working except for below issue
-                // expect(response.body.message).toEqual(`Successfully removed pet with id ${pet._id} from course with id ${course._id}`)
-                expect(course.petsEnrolled.length).toEqual(0)
-                expect(pet.enrolledCourses.length).toEqual(0)
+                expect(response.body.msg).toEqual(`Successfully removed pet with id ${pet._id} from course with id ${course._id}`)
         })
     test('Add instructor to course. it should correctly assign an instructor to the course AND UPDATE THE INSTRUCTORS COURSES ARRAY given an administrative user', async () => {
         const user = new User({
@@ -276,23 +258,13 @@ describe('Testing Course end points for RESTFUL JSON API', () => {
 
                         await course.save()
                         instructor.courses.push(course._id)
-                        // .set('Authorization', `Bearer ${token}`)
-
                         await instructor.save()
 
                         const response = await request(app)
                         .delete(`/courses/${course._id}/instructors/${instructor._id}/`)
                         .set('Authorization', `Bearer ${token}`)
 
-                        course.instructors.pull(instructor._id)
-                        await course.save()
-                        instructor.courses.pull(course._id)
-                        await instructor.save()
-
                         expect(response.statusCode).toBe(200)
-                        // Test is working except for below issue.
-                        // expect(response.body.message).toEqual(`Successfully removed instructor with id ${instructor._id} from course with id ${course._id}`)
-                        expect(course.instructors.length).toEqual(0)
-                        expect(instructor.courses.length).toEqual(0)
+                        expect(response.body.msg).toEqual(`Successfully removed instructor with id ${instructor._id} from course with id ${course._id}`)
     })
 })

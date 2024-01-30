@@ -56,6 +56,7 @@ describe('Testing Instructor end points for RESTFUL JSON API', () => {
         expect(Array.isArray(response.body.testimonials)).toBeTruthy()
         expect(response.body.testimonials.length).toEqual(3)
     })
+
     test('given a valid body it should update an existing instructor and return it', async () => {
         const user = new User({ name: 'adminUpdate user', email: 'adminUpdate@gmail.com', password: 'adminpassword!!', isAdmin: true })
          const token = await user.generateAuthToken()
