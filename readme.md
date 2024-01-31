@@ -9,10 +9,10 @@ How to run tests<br>
 How to start the app without dev mode.<br>
 
 <h1>Patient Paws Training Academy</h1>
-<h2>a Many-to-Many-to-Many API</h2>
+<h2>a Many-to-Many API</h2>
 <h4>a Tale of Stacks on Stacks on Stacks</h4>
 <h3>Christopher Lazariuk, General Assembly Unit 2</h3>
-<h4>Customer User Story: As a user, I want to enroll my pet(s) in a multiplicity off courses at the canine training academy 'Patient Paws'. I want to be able to view information about the other pets in the course, as well as view information about the various instructors assigned to the courses. If I loved my instructors, I want to submit a testimonial review of them.</h4>
+<h4>Customer User Story: As a user, I want to enroll my pet(s) in a multiplicity of courses at the canine training academy 'Patient Paws'. I want to be able to view information about the other pets in the course, as well as view information about the various instructors assigned to the courses. If I loved my instructors, I want to submit a testimonial review of them.</h4>
 <h4>Admin User Story: as a user, I want to manage my clients' enrolled pets and who will be covering what courses. I don't want to overbook my courses or instructors and we need to exclusively reserve the right to remove any pet from courses for bad behavior.</h4>
 <h5>Link to Trello Board: https://trello.com/b/1r0vkXFZ/patient-paws-training-academy</h5>
 <br>
@@ -34,16 +34,16 @@ SAVE FILE.
 In order to run this program you must have Node version 20 installed and running on your device.
 <br>
 <h5>Necessary packages to install<h5>
-<br> Type the following verbatim into terminal's command line while in working project folder:<br>
+<br> Type the following verbatim into terminal's command line while in working project folder to install relevant packages:<br>
+
+```
+npm i
+```
+<br>
+Super particular about what you want to download? No problem. See breakdown below of the bare minimum packages and dev packages:
 
 ```
 npm i express mongoose morgan bcrypt jsonwebtoken
-```
-
-<br>
-<h5>Necessary dev packages to install</h5> Type the following verbatim into terminal's command line while in working project folder: <br>
-
-```
 npm i -D nodemon jest supertest artillery mongo-db-memory-server
 ```
 
@@ -52,9 +52,9 @@ Ensure that you have nodemon installed globally.
 <br>
 <h6>Time to rock 'n roll!</h6>
 <br>
-Open up the project with 'code .' if you haven't done so already. Open terminal on project folder location within VS code.
-<br>
-Before initial rounds of testing, or to reset database per needs, type 'npm run seed' in command line while in project folder. This will plant pre-set instructors, users, courses, and pets into your database for easier testing and demo purposes. <br>note: user 'Kevin Bacon' is our seed file admin user. This is the user who must be logged in to perform admin only routes manual testing through Postman.
+Open up the project by typing 'code .' in the terminal while in the project folder if you haven't done so already. Then open terminal on project folder location within VS code.
+<br><br>
+Before initial rounds of testing, or to reset database per needs, type 'npm run seed' in command line while in project folder. This will plant pre-set instructors, users, courses, and pets into your database for easier testing and demo purposes. <br><strong>note: </strong>user 'Kevin Bacon' is our seed file admin user. This is the user who must be logged in to perform admin only routes manual testing through Postman.
 <br>
 Once you've grown tired of exploring the code, type 'npm run test' in terminal after verifying you're in the project's folder. The test files in the tests folder will execute and return the corresponding results.
 </p>
@@ -107,6 +107,14 @@ Instructors:
 
 <br>
 <h6>-list of all routes for Postman testing below. Always login with admin user and set authorization token in authorization column of new HTTP request in Postman before sending requests-</h6>
+To begin, in project folder terminal window, type:
+
+```
+npm run dev
+```
+
+This will begin connectivity to the database and allow you to run postman tests.
+
     <ul>
     <li><strong>Create User:</strong>Post request to localhost:3000/user/</li>
     <li><strong>Login User:</strong>Post request to localhost:3000/user/login</li>
