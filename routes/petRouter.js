@@ -4,10 +4,10 @@ const userController = require('../controllers/userController')
 const express = require('express')
 const router = express.Router()
 
-router.get('/', userController.auth, petController.index)
-router.post('/newPet', userController.auth, petController.create)
-router.put('/:id', userController.auth, petController.update)
-router.delete('/:id', userController.auth, petController.destroy)
-router.get('/:id', userController.auth, petController.show)
+router.get('/', petController.index)
+router.post('/newPet', petController.create)
+router.put('/:id', petController.update)
+router.delete('/:id', petController.destroy)
+router.get('/:id', petController.show)
 
 module.exports = router

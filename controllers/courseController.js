@@ -42,7 +42,7 @@ exports.enrollPet = async function enrollPet(req, res) {
     }
 }
 
-// ONLY ADMINS PERMISSIBLE TO DO BELOW
+// ONLY ADMINS PERMISSIBLE TO DO BELOW. Middleware implementation to enable dry code: the teo app.js tricks
 
 exports.create = async function create(req, res) {
     try {

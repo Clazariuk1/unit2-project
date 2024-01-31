@@ -6,7 +6,7 @@ const instructorSchema = new mongoose.Schema({
     name: { type: String, required: true },
     bio: { type: String, required: true },
     courses: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Course'}],
-    testimonials: [ { type: String }]
+    testimonials: [String]
 },
 {
     timestamps: true

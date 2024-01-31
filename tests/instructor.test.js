@@ -113,7 +113,6 @@ describe('Testing Instructor end points for RESTFUL JSON API', () => {
             expect(response.body.testimonials.length).toEqual(2)
     })
     test('It should allow a user to post a testimonial to an instructor object', async () => {
-        // FINAL ISSUE  : admins only are allowed to submit testimonials to instructors. issue.
         const user = new User({ name: 'Testify User', email: 'testimonials@test.com', password: 'TestMyPatience!?', isAdmin: false })
         const token = await user.generateAuthToken()
         await user.save()
@@ -126,10 +125,10 @@ describe('Testing Instructor end points for RESTFUL JSON API', () => {
         await instructor.save()
 
         const response = await request(app)
-        .put(`/instructors/${instructor._id}/`)
+        .put(`/instructors/testify/${instructor._id}/`)
         .set('Authorization', `Bearer ${token}`)
         .send({
-            testimonials: ["Are we actually reading these testimonials?"]
+            testimonials: "Are we actually reading these testimonials?"
         })
         expect(response.statusCode).toBe(200)
         expect(response.body.testimonials.length).toEqual(1)

@@ -20,11 +20,13 @@ How to start the app without dev mode.<br>
 <p>After successfully cloning into your desired local folder location from github, navigate to project folder via terminal command line.
 <br>
 type 'touch .env' to create a new env file. The three sets of data you must then enter are below, along with directions on what to insert within brackets: <br>
+
 ```
-'MONGO_URI=<enterLinkInformationToYourMongDBdatabase>'<br>
-'SECRET=<enterSHA-256-SECRET-encryptionToPreferredSecretPassword>'<br>
-<br>'SEED_PASSWORD=<enterYourDesiredMockPasswordForSeedFiles>'
+MONGO_URI=<enterLinkInformationToYourMongDBdatabase>
+SECRET=<enterSHA-256-SECRET-encryptionToPreferredSecretPassword>
+SEED_PASSWORD=<enterYourDesiredMockPasswordForSeedFiles>
 ```
+
 SECRET <strong>must</strong> be a sha256 hash. Link to hashing site: https://emn178.github.io/online-tools/sha256.html
 <br>Once your .env is correctly created, SAVE FILE<br>
 SAVE FILE.
@@ -33,14 +35,18 @@ In order to run this program you must have Node version 20 installed and running
 <br>
 <h5>Necessary packages to install<h5>
 <br> Type the following verbatim into terminal's command line while in working project folder:<br>
+
 ```
 npm i express mongoose morgan bcrypt jsonwebtoken
 ```
+
 <br>
 <h5>Necessary dev packages to install</h5> Type the following verbatim into terminal's command line while in working project folder: <br>
+
 ```
 npm i -D nodemon jest supertest artillery mongo-db-memory-server
 ```
+
 <br>
 Ensure that you have nodemon installed globally.
 <br>
@@ -57,16 +63,19 @@ Once you've grown tired of exploring the code, type 'npm run test' in terminal a
 <h4>Follow pet/user/course/instructor models in the codebase when crafting request bodies through Postman. Don't have Postman? Download/Install onto VS Code and get crackin'.</h4>
 <br>Here, Have some templates to add during manual testing if you're pressed for time or creativity!<br>
 User:
+
 ```
 {
     "name": "Jared Leto",
     "email": "OscarHungry@yahoo.com",
-    "password": "<make your own, please>",
+    "password": "make your own, please",
     "isAdmin": "true"
 }
 ```
+
 <br>
 Pet:
+
 ```
 {
     "name": "Demo Doggo",
@@ -75,22 +84,27 @@ Pet:
     "weight": 45
 }
 ```
+
 <br>
 Course:
+
 ```
 {
     "name": "Demo Course",
     "description": "Train your dog to create APIs through this exciting demo!"
 }
 ```
+
 <br>
 Instructors:
+
 ```
 {
     "name": "Demolition Man",
     "bio": "Frozen in time for thirty years, only to be reawakened for this API demo..."
 }
 ```
+
 <br>
 <h6>-list of all routes for Postman testing below. Always login with admin user and set authorization token in authorization column of new HTTP request in Postman before sending requests-</h6>
     <ul>
@@ -110,7 +124,7 @@ Instructors:
     <li><strong>Update Instructor:</strong>Put request to localhost:3000/instructors/instructorId</li>
     <li><strong>Show Instructor:</strong>Show request to localhost:3000/instructors/instructorId</li>
     <li><strong>Delete Instructor:</strong>Delete request to localhost:3000/instructors/instructorId</li>
-    <li><strong>Submit testimony to instructor:</strong>Put request to localhost:3000/instructors/instructorId</li>
+    <li><strong>Submit testimony to instructor:</strong>Put request to localhost:3000/instructors/testify/instructorId</li>
     <br>
     <li><strong>Index of Courses:</strong>Get request to localhost:3000/courses/</li>
     <li><strong>Show Course:</strong>Get request to localhost:3000/courses/courseId</li>

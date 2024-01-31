@@ -56,8 +56,9 @@ exports.show = async function show(req, res) {
 exports.submitTestimonial = async function submitTestimonial(req, res) {
     try {
         const foundInstructor = await Instructor.findOne({_id: req.params.id })
-         foundInstructor.testimonials.push(req.body)
+        foundInstructor.testimonials.push(req.body.testimonials)
            await foundInstructor.save()
+           res.status(200).json(foundInstructor)
     } catch (error) {
         res.status(400).json({ message: error.message })
     }
