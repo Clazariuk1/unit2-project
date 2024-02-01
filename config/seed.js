@@ -8,8 +8,6 @@ const Pet = require('../models/pet')
 const User = require('../models/user')
 
 const seed = async () => {
-    const getPetIds = () => pets.map(pet => pet._id.toString())
-    const getCourseIds = () => courses.map(course => course._id.toString())
 
     await User.deleteMany({})
     const users = await User.create([
@@ -103,8 +101,6 @@ const seed = async () => {
         testimonials: []
         }
     )
-
-    getPetIds()
 
     await Course.deleteMany({})
     const courses = await Course.create([
