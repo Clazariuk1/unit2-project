@@ -115,6 +115,7 @@ npm run dev
 
 This will begin connectivity to the database and allow you to run postman tests.
 
+```
     <ul>
     <li><strong>Create User:</strong>Post request to localhost:3000/user/</li>
     <li><strong>Login User:</strong>Post request to localhost:3000/user/login</li>
@@ -145,4 +146,5 @@ This will begin connectivity to the database and allow you to run postman tests.
     <li><strong>ADMIN- Remove an instructor from this course:</strong>Delete request to localhost:3000/courses/courseId/instructors/instructorId</li>
     </ul>
 <br>
-</ol>
+</ul>
+```
