@@ -115,8 +115,7 @@ npm run dev
 
 This will begin connectivity to the database and allow you to run postman tests.
 
-```
-    <ul>
+<ul>
     <li><strong>Create User:</strong>Post request to localhost:3000/user/</li>
     <li><strong>Login User:</strong>Post request to localhost:3000/user/login</li>
     <li><strong>Update User:</strong>Put request to localhost:3000/user/userId</li>
@@ -147,4 +146,3 @@ This will begin connectivity to the database and allow you to run postman tests.
     </ul>
 <br>
 </ul>
-```
